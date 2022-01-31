@@ -3,10 +3,26 @@
   <head>
     <meta charset="UTF-8" />
     <title>Hello World!</title>
-    <link rel="stylesheet" href="index.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
   </head>
-  <body>
-    <h1>💖 Hello World!</h1>
+  <body class="min-h-screen">
+    <div class="bg-black bg-opacity-75 w-screen h-screen absolute text-white grid place-items-center text-center transition-all duration-200" id="start-popup">
+      <div class="opacity-0 w-screen h-screen hidden transition-all duration-200" id="secret-popup">
+        <h1 class="text-3xl">Monstercat Widget URL</h1>
+        <p>Please enter the URL to your Stream Widget in the form below.</p>
+        <form action="#" method="get" id="secret-form">
+          <input type="url" placeholder="Stream Widget..." aria-autocomplete="none">
+        </form>
+      </div>
+      <div id="states" class="w-screen h-screen transition-all duration-200">
+        <p class="text-3xl">Please wait while loading the Mcat RPC...</p>
+        <p id="start-state">Connecting to Websocket...</p>
+      </div>
+    </div>
+    <h1 class="text-3xl">💖 Hello World!</h1>
     <p>Welcome to your Electron application.</p>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="script.js"></script>
   </body>
 </html>
