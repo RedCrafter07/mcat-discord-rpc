@@ -59,7 +59,7 @@ type CurrentlyPlaying = {
       ArtistsTitle: string,
       CatalogId: string
     }
-  }
+}
 
 async function handleCurrentSong(input: CurrentlyPlaying) {
     const current = input.CurrentlyPlaying;
