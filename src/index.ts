@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, Tray } from 'electron';
 import * as path from 'path';
 
 import socket from "./lib/socket";
@@ -11,14 +11,17 @@ if (require('electron-squirrel-startup')) {
   app.quit();
 }
 
+let mainWindow: BrowserWindow | null = null;
+
 const createWindow = (): void => {
   // Create the browser window.
-  const mainWindow = new BrowserWindow({
+  if(mainWindow) return;
+  mainWindow = new BrowserWindow({
     height: 600,
     width: 800,
-    webPreferences: {
-      nodeIntegration: true
-    }
+    resizable: false,
+    maximizable: false,
+    darkTheme: true,
   });
 
   // and load the index.html of the app.
@@ -39,12 +42,28 @@ app.on('window-all-closed', () => {
   }
 });
 
+let quit = false;
+
+app.on("will-quit", (event) => {
+  if(quit == true) event.preventDefault();
+
+})
+
 app.on('activate', () => {
   // On OS X it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
   if (BrowserWindow.getAllWindows().length === 0) {
     createWindow();
   }
+
+  console.log(`${__dirname}\\mcat.png`)
+
+  const tray = new Tray(`${__dirname}\\mcat.png`);
+  tray.setToolTip('Monstercat');
+  tray.on("click", () => {
+    if(mainWindow) mainWindow.show();
+    else createWindow();
+  })
 });
 
 // In this file you can include the rest of your app's specific main process
