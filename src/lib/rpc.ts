@@ -63,10 +63,17 @@ type CurrentlyPlaying = {
 
 async function handleCurrentSong(input: CurrentlyPlaying) {
     const current = input.CurrentlyPlaying;
+    if(!current) utils.stopRPC();
     utils.setRPC({
         details: `${current.ArtistsTitle} - ${current.TrackTitle}${current.TrackVersion != "" ? ` (${current.TrackVersion})` : ""}`,
         state: `from ${current.ReleaseTitle}`,
         largeImageKey: "mcat",
         largeImageText: "Listening to the Monstercat Library",
+        buttons: [
+            {
+                label: "Play",
+                url: `https://www.monstercat.com/release/${current.ReleaseId}`
+            }
+        ]
     })
 }
