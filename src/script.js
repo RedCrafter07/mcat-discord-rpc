@@ -39,6 +39,14 @@ socket.onmessage = ({ data }) => {
 	}
 };
 
+document.querySelector('#rpc-stop').addEventListener('click', () => {
+	socket.send('req_rpc_stop');
+});
+
+document.querySelector('#rpc-start').addEventListener('click', () => {
+	socket.send('req_rpc_start');
+});
+
 function startRPC() {
 	changeState('Starting RPC...');
 	socket.send('req_rpc_start');
