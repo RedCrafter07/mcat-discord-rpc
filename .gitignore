@@ -87,3 +87,9 @@ typings/
 
 # Electron-Forge
 out/
+
+# Data
+data.json
+
+# Dist
+dist/
