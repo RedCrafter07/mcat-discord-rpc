@@ -1,6 +1,6 @@
 import * as RPC from "discord-rpc";
 import fetchCurrentSong from "./mcat";
-import * as moment from "moment";
+// import * as moment from "moment";
 
 const client = new RPC.Client({
     transport: "ipc"
@@ -66,5 +66,7 @@ async function handleCurrentSong(input: CurrentlyPlaying) {
     utils.setRPC({
         details: `${current.ArtistsTitle} - ${current.TrackTitle}${current.TrackVersion != "" ? ` (${current.TrackVersion})` : ""}`,
         state: `from ${current.ReleaseTitle}`,
+        largeImageKey: "mcat",
+        largeImageText: "Listening to the Monstercat Library",
     })
 }
