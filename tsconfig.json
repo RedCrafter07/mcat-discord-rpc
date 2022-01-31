@@ -10,7 +10,8 @@
     "resolveJsonModule": true,
     "paths": {
       "*": ["node_modules/*"]
-    }
+    },
+    "target": "ES2021"
   },
   "include": ["src/**/*"]
 }
