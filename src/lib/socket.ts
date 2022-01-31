@@ -6,7 +6,6 @@ export default async function() {
     const WebSocketServer = new Server({ port: 8080, host: "127.0.0.1" });
     WebSocketServer.on("connection", socket => {
         socket.on("message", async (message) => {
-            console.log(message.toString())
             socket.send(JSON.stringify({msg: "Hello World"}));
 
             const msg: string = message.toString();
