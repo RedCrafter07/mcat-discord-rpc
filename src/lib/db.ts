@@ -8,4 +8,18 @@ import { Config } from 'node-json-db/dist/lib/JsonDBConfig'
 // The last argument is the separator. By default it's slash (/)
 const db = new JsonDB(new Config("data", true, false, '/'));
 
+(async () => {
+    const data = await db.getData("/");
+    if(!data.timeType) data.timeType = "remaining";
+    if(!data.show) data.show = {
+        "time": true,
+        "trackName": true,
+        "artistName": true,
+        "albumName": true,
+        "playButton": true
+    }
+
+    await db.push("/", data);
+})()
+
 export default db;
