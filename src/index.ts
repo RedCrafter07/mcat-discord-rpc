@@ -12,6 +12,8 @@ if (require('electron-squirrel-startup')) {
   app.quit();
 }
 
+let stopped = false;
+
 let tray: Tray | null;
 
 let mainWindow: BrowserWindow | null = null;
@@ -30,6 +32,7 @@ const createWindow = (): void => {
 
   mainWindow.on("close", () => {
     mainWindow = null;
+    if(stopped == true) return;
     new Notification({
       title: "Mcat-Dc",
       body: "Mcat-Dc is still running in the background! Check your system tray to open it again or quit the app.",
@@ -80,6 +83,7 @@ function runTray() {
 			label: 'Quit',
 			type: 'normal',
 			click: () => {
+        stopped = true;
 				app.quit();
 			}
 		}
