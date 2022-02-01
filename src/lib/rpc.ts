@@ -1,6 +1,7 @@
 import * as RPC from "discord-rpc";
 import fetchCurrentSong from "./mcat";
 import * as moment from "moment";
+import db from "./db";
 
 const client = new RPC.Client({
     transport: "ipc"
@@ -12,7 +13,7 @@ let currentRPC: RPC.Presence = {
     instance: false
 }
 
-const total = Date.now();
+const totalTime = new Date();
 
 let int: any;
 
@@ -72,6 +73,7 @@ type CurrentlyPlaying = {
     
 
 async function handleCurrentSong(input: CurrentlyPlaying) {
+    const data = await db.getData("/timeType")
     if(!input.playing) {
         utils.setRPC({
             state: "Paused"
@@ -80,9 +82,17 @@ async function handleCurrentSong(input: CurrentlyPlaying) {
     }
     else {
         const current = input.CurrentlyPlaying;
-        const time = moment().add(current.Duration, "seconds").subtract(current.CurrentPlayLocation, "seconds").toDate();
+        const times: any = {
+            remaining: moment().add(current.Duration, "seconds").subtract(current.CurrentPlayLocation, "seconds").toDate(),
+            elapsed: moment().subtract(current.CurrentPlayLocation, "seconds").toDate(),
+            total: totalTime
+        }
+
+        const time: any = times[data];
+
         utils.startRPC()
-        utils.setRPC({
+
+        const presObj: RPC.Presence = {
             details: `${current.ArtistsTitle} - ${current.TrackTitle}${current.TrackVersion != "" ? ` (${current.TrackVersion})` : ""}`,
             state: `from ${current.ReleaseTitle}`,
             largeImageKey: "mcat",
@@ -92,8 +102,15 @@ async function handleCurrentSong(input: CurrentlyPlaying) {
                     label: "Play",
                     url: `https://www.monstercat.com/release/${current.ReleaseId}`
                 }
-            ],
-            endTimestamp: time
-        })
+            ]
+        }
+
+        if(data == "remaining") {
+            presObj.endTimestamp = time;
+        }   else {
+            presObj.startTimestamp = time;
+        }
+
+        utils.setRPC(presObj)
     }
 }
