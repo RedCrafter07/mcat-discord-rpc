@@ -31,6 +31,9 @@ export default async function() {
                     case "rpc_stop": 
                         {
                             rpc.stopRPC();
+                            socket.send(JSON.stringify({
+                                type: "confirm", data: "rpc_stop"
+                            }))
                         }
                         break;
                 }
