@@ -28,7 +28,10 @@ const createWindow = (): void => {
     height: 600,
     width: 800,
     darkTheme: true,
+    backgroundColor: '#000000',
   });
+
+  mainWindow.setMenu(null);
 
   mainWindow.on("close", () => {
     mainWindow = null;
