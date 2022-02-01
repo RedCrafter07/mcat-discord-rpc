@@ -64,7 +64,7 @@ function changeState(state) {
 				// eslint-disable-next-line no-undef
 				$('#start-popup').addClass('hidden');
 			}, 200);
-		}, 2000);
+		}, 1000);
 	}
 }
 
