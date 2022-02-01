@@ -27,7 +27,7 @@ async function fetchCurrentSong(): Promise<CurrentlyPlaying> {
     try {
         res = await axios.get(`https://player.monstercat.app/api/currently-playing?code=${secret}`)
     }   catch(e) {
-        console.log();
+        // console.log(e);
     }
 
     if(!res || !res.data) return {playing:false};
