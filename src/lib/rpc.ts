@@ -1,6 +1,6 @@
 import * as RPC from "discord-rpc";
 import fetchCurrentSong from "./mcat";
-// import * as moment from "moment";
+import * as moment from "moment";
 
 const client = new RPC.Client({
     transport: "ipc"
@@ -11,6 +11,8 @@ let currentRPC: RPC.Presence = {
     startTimestamp: new Date(),
     instance: false
 }
+
+const total = Date.now();
 
 let int: any;
 
@@ -78,6 +80,7 @@ async function handleCurrentSong(input: CurrentlyPlaying) {
     }
     else {
         const current = input.CurrentlyPlaying;
+        const time = moment().add(current.Duration, "seconds").subtract(current.CurrentPlayLocation, "seconds").toDate();
         utils.startRPC()
         utils.setRPC({
             details: `${current.ArtistsTitle} - ${current.TrackTitle}${current.TrackVersion != "" ? ` (${current.TrackVersion})` : ""}`,
@@ -89,7 +92,8 @@ async function handleCurrentSong(input: CurrentlyPlaying) {
                     label: "Play",
                     url: `https://www.monstercat.com/release/${current.ReleaseId}`
                 }
-            ]
+            ],
+            endTimestamp: time
         })
     }
 }
