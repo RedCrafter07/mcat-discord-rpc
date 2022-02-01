@@ -10,14 +10,20 @@ socket.onopen = () => {
 	socket.send('req_data');
 };
 
+let dataObj;
+
 socket.onmessage = ({ data }) => {
 	let json = JSON.parse(data);
 	let input = json.data;
-	console.log(input);
 	if (!json.type) return;
 	if (json.type === 'data') {
+		dataObj = input;
 		changeState('Validating data...');
-		console.log(input);
+
+		document
+			.querySelector(`#${dataObj.timeType}`)
+			.setAttribute('selected', 'true');
+
 		if (!input.secret) {
 			secretPopup();
 			changeState('Waiting for user input...');
@@ -88,4 +94,17 @@ document.querySelector('#secret-form').addEventListener('submit', e => {
 	// eslint-disable-next-line no-undef
 	$('#states').removeClass('opacity-0 hidden');
 	startRPC();
+});
+
+document.querySelector('#time-type-form').addEventListener('submit', e => {
+	e.preventDefault();
+	let val = document.querySelector('#time-type-form select').value;
+	socket.send(`save_${JSON.stringify({ data: val, path: '/timeType' })}`);
+	socket.send('req_data');
+	/* changeState('Saving...');
+	// eslint-disable-next-line no-undef
+	$('#secret-popup').addClass('opacity-0 hidden');
+	// eslint-disable-next-line no-undef
+	$('#states').removeClass('opacity-0 hidden');
+	startRPC(); */
 });
