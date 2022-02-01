@@ -1,7 +1,24 @@
 import {default as axios} from "axios";
 import db from "./db";
 
-async function fetchCurrentSong() {
+type CurrentlyPlaying = {
+    CurrentlyPlaying?: {
+      ReleaseId: string,  
+      TrackId: string,
+      UserId: string,
+      PlayTime: Date,
+      CurrentPlayLocation: number,
+      Duration: number,
+      TrackTitle: string,
+      TrackVersion: string,
+      ReleaseTitle: string,
+      ArtistsTitle: string,
+      CatalogId: string
+    },
+    playing: boolean
+}
+
+async function fetchCurrentSong(): Promise<CurrentlyPlaying> {
     let secret = await db.getData("/secret");
     if(!secret) return;
     secret = secret.split("=")[1];
@@ -12,7 +29,9 @@ async function fetchCurrentSong() {
     }   catch(e) {
         console.log();
     }
-    if(!res.data) return;
+
+    if(!res || !res.data) return {playing:false};
+    else res.data.playing = true;
     return res.data;
 }
 

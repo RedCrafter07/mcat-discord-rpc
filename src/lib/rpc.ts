@@ -14,14 +14,20 @@ let currentRPC: RPC.Presence = {
 
 let int: any;
 
+(async () => {
+    handleCurrentSong(await (await fetchCurrentSong()));
+})();
+
+setInterval(async () => {
+    handleCurrentSong(await (await fetchCurrentSong()));
+}, 5000)
+
 async function rpcState(enabled: boolean) {
     if(enabled == true) {
         client.setActivity(currentRPC)
         if(int) clearInterval(int);
-        handleCurrentSong(await fetchCurrentSong());
         int = setInterval(async () => {
             client.setActivity(currentRPC)
-            handleCurrentSong(await fetchCurrentSong());
         }, 15 * 1000)
     }   else {
         if(int) clearInterval(int);
@@ -46,7 +52,7 @@ const utils = {
 export default utils;
 
 type CurrentlyPlaying = {
-    CurrentlyPlaying: {
+    CurrentlyPlaying?: {
       ReleaseId: string,  
       TrackId: string,
       UserId: string,
@@ -58,22 +64,32 @@ type CurrentlyPlaying = {
       ReleaseTitle: string,
       ArtistsTitle: string,
       CatalogId: string
-    }
+    },
+    playing: boolean
 }
+    
 
 async function handleCurrentSong(input: CurrentlyPlaying) {
-    const current = input.CurrentlyPlaying;
-    if(!current) utils.stopRPC();
-    utils.setRPC({
-        details: `${current.ArtistsTitle} - ${current.TrackTitle}${current.TrackVersion != "" ? ` (${current.TrackVersion})` : ""}`,
-        state: `from ${current.ReleaseTitle}`,
-        largeImageKey: "mcat",
-        largeImageText: "Listening to the Monstercat Library",
-        buttons: [
-            {
-                label: "Play",
-                url: `https://www.monstercat.com/release/${current.ReleaseId}`
-            }
-        ]
-    })
+    if(!input.playing) {
+        utils.setRPC({
+            state: "Paused"
+        })
+        utils.stopRPC();
+    }
+    else {
+        const current = input.CurrentlyPlaying;
+        utils.startRPC()
+        utils.setRPC({
+            details: `${current.ArtistsTitle} - ${current.TrackTitle}${current.TrackVersion != "" ? ` (${current.TrackVersion})` : ""}`,
+            state: `from ${current.ReleaseTitle}`,
+            largeImageKey: "mcat",
+            largeImageText: "Listening to the Monstercat Library",
+            buttons: [
+                {
+                    label: "Play",
+                    url: `https://www.monstercat.com/release/${current.ReleaseId}`
+                }
+            ]
+        })
+    }
 }
