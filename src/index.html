@@ -6,7 +6,10 @@
     <script src="https://cdn.tailwindcss.com"></script>
   </head>
   <body class="min-h-screen bg-neutral-800 text-white">
-    <div class="bg-black bg-opacity-75 w-screen h-screen absolute text-white grid place-items-center text-center transition-all duration-200 backdrop-blur" id="start-popup">
+    <div class="fixed bottom-4 right-4 opacity-25 z-50 select-none">
+      <p title="Info: This software is not affiliated with Monstercat.">By RedCrafter07</p>
+    </div>
+    <div class="bg-black bg-opacity-75 w-screen h-screen absolute text-white grid place-items-center text-center transition-all duration-200 backdrop-blur select-none" id="start-popup">
       <div class="opacity-0 hidden transition-all duration-200" id="secret-popup">
         <h1 class="text-3xl">Monstercat Widget URL</h1>
         <p>Please enter the URL to your Stream Widget in the form below.</p>
@@ -19,11 +22,31 @@
         <p id="start-state">Connecting to Websocket...</p>
       </div>
     </div>
-    <div class="mx-auto px-2">
-      <h1 class="text-3xl">💖 Hello World!</h1>
-      <p>Welcome to your Electron application.</p>
+    <div class="cotainer mx-auto px-2">
+      <h1 class="text-3xl">Hi there!</h1>
+      <p>Welcome to the Monstercat Discord RPC!</p>
       <button id="rpc-stop" class="bg-red-500 px-4 py-1 rounded-lg">Stop</button>
       <button id="rpc-start" class="bg-green-500 px-4 py-1 rounded-lg">Start</button>
+
+      <hr class="my-6">
+
+      <p class="inline text-3xl"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" /></svg> Settings</p>
+
+      <div class="my-4"></div>
+
+      <h3 class="text-2xl">Time type</h3>
+      <p>Select the time type you want to use.</p>
+      <div class="my-4"></div>
+      <form action="/" method="get" id="time-type-form">
+        <div class="grid gap-0 grid-cols-8">
+          <select name="time-type" id="" class="w-full bg-neutral-600 px-4 py-2 rounded-l-full focus:outline-none inline col-span-7">
+            <option value="remaining" id="remaining">Time remaining (Song)</option>
+            <option value="elapsed" id="elapsed">Time listening (Song)</option>
+            <option value="total" id="total">Time listening (Total)</option>
+          </select>
+          <input type="submit" value="Save" class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-r-full inline w-full cursor-pointer transition-color duration-200">
+        </div>
+      </form>
     </div>
 
 
