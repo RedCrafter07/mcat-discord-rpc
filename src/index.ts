@@ -25,6 +25,28 @@ let stopped = false;
 let tray: Tray | null;
 
 let mainWindow: BrowserWindow | null = null;
+let mcatWindow: BrowserWindow | null = null;
+
+const createMcat = (): void => {
+	// Create the browser window.
+	if (mcatWindow) {
+		mcatWindow.show();
+		return;
+	}
+	mcatWindow = new BrowserWindow({
+		height: 600,
+		width: 800,
+		darkTheme: true,
+		backgroundColor: '#000000',
+	});
+
+	mcatWindow.maximize();
+
+	mcatWindow.setMenu(null);
+
+	// and load the index.html of the app.
+	mcatWindow.loadURL('https://player.monstercat.app');
+};
 
 const createWindow = (): void => {
 	// Create the browser window.
@@ -43,24 +65,6 @@ const createWindow = (): void => {
 
 	mainWindow.on('close', () => {
 		mainWindow = null;
-		if (stopped == true) return;
-		new Notification({
-			title: 'Mcat-Dc',
-			body:
-				'Mcat-Dc is still running in the background! Check your system tray to open it again or quit the app.',
-			silent: true,
-			timeoutType: 'default',
-			subtitle: 'Info',
-			icon: path.join(__dirname, '../src/mcat.png'),
-		})
-			.on('action', (event, i) => {
-				if (i == 0) {
-					createWindow();
-				} else {
-					app.quit();
-				}
-			})
-			.show();
 	});
 
 	// and load the index.html of the app.
@@ -102,6 +106,13 @@ function runTray() {
 	tray = new Tray(icon);
 	const contextMenu = Menu.buildFromTemplate([
 		{ label: 'Mcat-Dc', type: 'normal', enabled: false },
+		{
+			label: 'Player',
+			type: 'normal',
+			click: () => {
+				createMcat();
+			},
+		},
 		{
 			label: 'Quit',
 			type: 'normal',
