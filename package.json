@@ -24,14 +24,13 @@
 				{
 					"name": "@electron-forge/maker-squirrel",
 					"config": {
-						"name": "mcat_discord_rpc"
+						"name": "mcat_discord_rpc",
+						"iconUrl": "D:\\coding\\mcat-discord-rpc\\src\\mcat.png"
 					}
 				},
 				{
 					"name": "@electron-forge/maker-zip",
-					"platforms": [
-						"darwin"
-					]
+					"platforms": [ "darwin" ]
 				},
 				{
 					"name": "@electron-forge/maker-deb",
