@@ -53,6 +53,14 @@ document.querySelector('#rpc-start').addEventListener('click', () => {
 	socket.send('req_rpc_start');
 });
 
+document.querySelector('#rpc-kill').addEventListener('click', () => {
+	socket.send('req_rpc_kill');
+});
+
+document.querySelector('#rpc-con').addEventListener('click', () => {
+	socket.send('req_rpc_reconnect');
+});
+
 function startRPC() {
 	changeState('Starting RPC...');
 	socket.send('req_rpc_start');
