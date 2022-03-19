@@ -12,11 +12,9 @@
 		"lint": "eslint --ext .ts ."
 	},
 	"keywords": [],
-	"author": {
-		"name": "RedCrafter07",
-		"email": "github@redcrafter07.de"
-	},
-	"license": "GNU GPLv3",
+	"author": "RedCrafter07 <github@redcrafter07.de>",
+	"repository": "https://github.com/RedCrafter07/mcat-discord-rpc",
+	"license": "GPL-3.0-or-later",
 	"config": {
 		"forge": {
 			"packagerConfig": {},
@@ -68,5 +66,6 @@
 		"moment": "^2.29.1",
 		"node-json-db": "^1.4.1",
 		"ws": "^8.4.2"
-	}
+	},
+	"private": false
 }
