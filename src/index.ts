@@ -45,7 +45,7 @@ const createMcat = (): void => {
 	mcatWindow.setMenu(null);
 
 	// and load the index.html of the app.
-	mcatWindow.loadURL('https://player.monstercat.dev');
+	mcatWindow.loadURL('https://player.monstercat.app');
 };
 
 const createWindow = (): void => {
