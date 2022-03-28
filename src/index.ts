@@ -40,6 +40,10 @@ const createMcat = (): void => {
 		backgroundColor: '#000000',
 	});
 
+	mcatWindow.on('close', () => {
+		mcatWindow = null;
+	});
+
 	mcatWindow.maximize();
 
 	mcatWindow.setMenu(null);
