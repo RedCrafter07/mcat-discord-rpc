@@ -85,7 +85,7 @@ type CurrentlyPlaying = {
 };
 
 async function handleCurrentSong(input: CurrentlyPlaying) {
-	const data = await db.getData('/timeType');
+	const data: 'remaining' | 'elapsed' | 'total' = await db.getData('/timeType');
 	if (!input.playing) {
 		utils.setRPC({
 			state: 'Paused',
@@ -93,7 +93,7 @@ async function handleCurrentSong(input: CurrentlyPlaying) {
 		utils.stopRPC();
 	} else {
 		const current = input.CurrentlyPlaying;
-		const times: any = {
+		const times = {
 			remaining: moment()
 				.add(current.Duration, 'seconds')
 				.subtract(current.CurrentPlayLocation, 'seconds')
@@ -104,22 +104,21 @@ async function handleCurrentSong(input: CurrentlyPlaying) {
 			total: totalTime,
 		};
 
-		const time: any = times[data];
+		const time = times[data];
 
 		utils.startRPC();
 
 		const presObj: RPC.Presence = {
-			details: `${current.ArtistsTitle} - ${current.TrackTitle}${current.TrackVersion !=
-			''
-				? ` (${current.TrackVersion})`
-				: ''}`,
+			details: `${current.ArtistsTitle} - ${current.TrackTitle}${
+				current.TrackVersion != '' ? ` (${current.TrackVersion})` : ''
+			}`,
 			state: `from ${current.ReleaseTitle}`,
 			largeImageKey: 'mcat',
 			largeImageText: 'Listening to the Monstercat Library',
 			buttons: [
 				{
 					label: 'Play',
-					url: `https://www.monstercat.com/release/${current.ReleaseId}`,
+					url: `https://www.monstercat.com/release/${current.CatalogId}`,
 				},
 			],
 		};
