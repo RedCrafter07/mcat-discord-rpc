@@ -10,6 +10,7 @@ let client = new RPC.Client({
 let currentRPC: RPC.Presence = {
 	state: 'Loading...',
 	startTimestamp: new Date(),
+	largeImageKey: 'mcat',
 	instance: false,
 };
 
@@ -113,8 +114,8 @@ async function handleCurrentSong(input: CurrentlyPlaying) {
 				current.TrackVersion != '' ? ` (${current.TrackVersion})` : ''
 			}`,
 			state: `from ${current.ReleaseTitle}`,
-			largeImageKey: 'mcat',
-			largeImageText: 'Listening to the Monstercat Library',
+			largeImageKey: getImageURL(current.CatalogId),
+			largeImageText: `mcat-discord-rpc`,
 			buttons: [
 				{
 					label: 'Play',
@@ -131,4 +132,8 @@ async function handleCurrentSong(input: CurrentlyPlaying) {
 
 		utils.setRPC(presObj);
 	}
+}
+
+function getImageURL(catalogId: string) {
+	return `https://cdx.monstercat.com/?width=256&encoding=webp&url=https%3A%2F%2Fwww.monstercat.com%2Frelease%2F${catalogId}%2Fcover`;
 }
