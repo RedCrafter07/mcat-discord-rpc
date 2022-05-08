@@ -1,15 +1,5 @@
-import {
-	app,
-	BrowserWindow,
-	Tray,
-	Menu,
-	NativeImage,
-	nativeImage,
-	Notification,
-} from 'electron';
+import { app, BrowserWindow, Tray, Menu, nativeImage } from 'electron';
 import * as path from 'path';
-import rpc from './lib/rpc';
-
 import socket from './lib/socket';
 
 const WebSocket = socket();
@@ -58,6 +48,7 @@ const createWindow = (): void => {
 		mainWindow.show();
 		return;
 	}
+
 	mainWindow = new BrowserWindow({
 		height: 600,
 		width: 800,
