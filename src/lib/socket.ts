@@ -2,10 +2,10 @@ import { Server } from 'ws';
 import db from './db';
 import rpc from './rpc';
 
-export default async function() {
+export default async function () {
 	const WebSocketServer = new Server({ port: 8080, host: '127.0.0.1' });
-	WebSocketServer.on('connection', socket => {
-		socket.on('message', async message => {
+	WebSocketServer.on('connection', (socket) => {
+		socket.on('message', async (message) => {
 			socket.send(JSON.stringify({ msg: 'Hello World' }));
 
 			const msg: string = message.toString();
@@ -18,7 +18,7 @@ export default async function() {
 								JSON.stringify({
 									type: 'data',
 									data: db.getData('/'),
-								})
+								}),
 							);
 						}
 						break;
@@ -29,7 +29,7 @@ export default async function() {
 								JSON.stringify({
 									type: 'confirm',
 									data: 'rpc_start',
-								})
+								}),
 							);
 						}
 						break;
@@ -40,7 +40,7 @@ export default async function() {
 								JSON.stringify({
 									type: 'confirm',
 									data: 'rpc_stop',
-								})
+								}),
 							);
 						}
 						break;
@@ -54,6 +54,12 @@ export default async function() {
 							rpc.reconnect();
 						}
 						break;
+					case 'rpc_logout':
+						{
+							db.delete('/secret');
+							rpc.stopRPC();
+						}
+						break;
 				}
 			} else if (msg.startsWith('save_')) {
 				const data = JSON.parse(msg.slice('save_'.length));
@@ -64,7 +70,7 @@ export default async function() {
 					JSON.stringify({
 						type: 'confirm',
 						data: 'save',
-					})
+					}),
 				);
 			}
 		});

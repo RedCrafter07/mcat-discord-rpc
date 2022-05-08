@@ -61,6 +61,11 @@ document.querySelector('#rpc-con').addEventListener('click', () => {
 	socket.send('req_rpc_reconnect');
 });
 
+document.querySelector('#rpc-logout').addEventListener('click', () => {
+	socket.send('req_rpc_logout');
+	window.location.reload();
+});
+
 function startRPC() {
 	changeState('Starting RPC...');
 	socket.send('req_rpc_start');
@@ -92,7 +97,7 @@ function secretPopup() {
 	$('#states').addClass('opacity-0 hidden');
 }
 
-document.querySelector('#secret-form').addEventListener('submit', e => {
+document.querySelector('#secret-form').addEventListener('submit', (e) => {
 	e.preventDefault();
 	let secret = document.querySelector('#secret-form input').value;
 	socket.send(`save_${JSON.stringify({ data: secret, path: '/secret' })}`);
@@ -104,7 +109,7 @@ document.querySelector('#secret-form').addEventListener('submit', e => {
 	startRPC();
 });
 
-document.querySelector('#time-type-form').addEventListener('submit', e => {
+document.querySelector('#time-type-form').addEventListener('submit', (e) => {
 	e.preventDefault();
 	let val = document.querySelector('#time-type-form select').value;
 	socket.send(`save_${JSON.stringify({ data: val, path: '/timeType' })}`);
