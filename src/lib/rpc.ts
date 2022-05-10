@@ -2,6 +2,7 @@ import * as RPC from 'discord-rpc';
 import fetchCurrentSong from './mcat';
 import * as moment from 'moment';
 import db from './db';
+import { log } from 'console';
 
 let client = new RPC.Client({
 	transport: 'ipc',
@@ -115,7 +116,9 @@ async function handleCurrentSong(input: CurrentlyPlaying) {
 			}`,
 			state: `from ${current.ReleaseTitle}`,
 			largeImageKey: getImageURL(current.CatalogId),
-			largeImageText: `mcat-discord-rpc`,
+			largeImageText: `${current.CatalogId}`,
+			smallImageKey: 'mcat',
+			smallImageText: 'mcat-discord-rpc',
 			buttons: [
 				{
 					label: 'Play',
