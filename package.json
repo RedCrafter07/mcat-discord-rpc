@@ -23,7 +23,7 @@
 					"name": "@electron-forge/maker-squirrel",
 					"config": {
 						"name": "mcat_discord_rpc",
-						"iconUrl": "D:\\coding\\mcat-discord-rpc\\src\\mcat.ico"
+						"iconUrl": "D:\\coding\\mcat-discord-rpc\\mcat.ico"
 					}
 				},
 				{
