@@ -181,30 +181,34 @@ const App = () => {
 					<div className='container mx-auto px-2'>
 						<h1 className='text-3xl'>Hi there!</h1>
 						<p>Welcome to the Monstercat Discord RPC!</p>
-						<Button
-							color='red'
-							variant='outline'
-							className='mr-2'
-							onClick={() => {
-								fetch('http://localhost:8090/stop', {
-									method: 'post',
-								});
-							}}
-						>
-							Stop
-						</Button>
-						<Button
-							color='green'
-							variant='outline'
-							className='mr-2'
-							onClick={() => {
-								fetch('http://localhost:8090/start', {
-									method: 'post',
-								});
-							}}
-						>
-							Start
-						</Button>
+						<Tooltip label='Stop the RPC' withArrow color={'red'}>
+							<Button
+								color='red'
+								variant='outline'
+								className='mr-2'
+								onClick={() => {
+									fetch('http://localhost:8090/stop', {
+										method: 'post',
+									});
+								}}
+							>
+								Stop
+							</Button>
+						</Tooltip>
+						<Tooltip label='Start the RPC' withArrow color={'green'}>
+							<Button
+								color='green'
+								variant='outline'
+								className='mr-2'
+								onClick={() => {
+									fetch('http://localhost:8090/start', {
+										method: 'post',
+									});
+								}}
+							>
+								Start
+							</Button>
+						</Tooltip>
 						<Tooltip label='Stop the RPC completely' withArrow color={'grape'}>
 							<Button
 								color='grape'
@@ -272,7 +276,7 @@ const App = () => {
 								<h3 className='text-2xl'>
 									Time type{' '}
 									<Tooltip
-										label='These settings are saving automatically'
+										label='This setting is saving automatically'
 										withArrow
 										color={'green'}
 									>
