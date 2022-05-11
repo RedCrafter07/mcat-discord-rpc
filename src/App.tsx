@@ -272,7 +272,7 @@ const App = () => {
 								<h3 className='text-2xl'>
 									Time type{' '}
 									<Tooltip
-										label='The settings are saving automatically'
+										label='These settings are saving automatically'
 										withArrow
 										color={'green'}
 									>
