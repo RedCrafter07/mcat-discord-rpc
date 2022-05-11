@@ -1,7 +1,7 @@
 {
 	"name": "mcat-discord-rpc",
 	"productName": "mcat-discord-rpc",
-	"version": "1.0.4",
+	"version": "1.0.5",
 	"description": "Displays a Now Playing Status on your Discord Profile for the Monstercat Player",
 	"main": ".webpack/main",
 	"scripts": {
