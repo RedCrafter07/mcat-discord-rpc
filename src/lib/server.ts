@@ -51,7 +51,7 @@ export default async function () {
 	});
 
 	app.get('/currentSong', async (req, res) => {
-		res.json(fetchCurrentSong());
+		res.json(await fetchCurrentSong());
 	});
 
 	app.listen(8090, '127.0.0.1');
