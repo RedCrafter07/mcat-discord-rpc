@@ -1,8 +1,7 @@
 import * as RPC from 'discord-rpc';
 import fetchCurrentSong from './mcat';
-import * as moment from 'moment';
+import moment from 'moment';
 import db from './db';
-import { log } from 'console';
 
 let client = new RPC.Client({
 	transport: 'ipc',
