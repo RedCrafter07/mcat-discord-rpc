@@ -1,0 +1,354 @@
+import {
+	Accordion,
+	Badge,
+	Button,
+	MantineProvider,
+	PasswordInput,
+	Select,
+	TextInput,
+	ThemeIcon,
+	Tooltip,
+} from '@mantine/core';
+import {
+	NotificationsProvider,
+	showNotification,
+} from '@mantine/notifications';
+import { IconAdjustments, IconHeadphones } from '@tabler/icons';
+import { AnimatePresence, motion } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
+
+type CurrentlyPlaying = {
+	CurrentlyPlaying?: {
+		ReleaseId: string;
+		TrackId: string;
+		UserId: string;
+		PlayTime: Date;
+		CurrentPlayLocation: number;
+		Duration: number;
+		TrackTitle: string;
+		TrackVersion: string;
+		ReleaseTitle: string;
+		ArtistsTitle: string;
+		CatalogId: string;
+	};
+	playing: boolean;
+};
+
+const App = () => {
+	const [data, setData] = useState<Record<string, unknown>>();
+	const [current, setCurrent] = useState<'fetching' | 'validating' | 'started'>(
+		'fetching',
+	);
+	const [listeningData, setListeningData] = useState<CurrentlyPlaying>(null);
+
+	const [timeType, setTimeType] = useState('remaining');
+
+	const StartOverlay = () => {
+		const texts = {
+			fetching: 'Fetching data...',
+			validating: 'Validating data...',
+			started: 'Started!',
+		};
+
+		return (
+			<motion.div
+				className='bg-black bg-opacity-75 w-screen h-screen absolute text-white grid place-items-center text-center transition-all duration-200 backdrop-blur select-none z-20'
+				id='start-popup'
+				initial={{
+					opacity: 1,
+				}}
+				exit={{
+					opacity: 0,
+				}}
+				transition={{
+					delay: 0.5,
+					duration: 0.25,
+					ease: 'easeInOut',
+				}}
+			>
+				<div className='transition-all duration-200'>
+					<p className='text-3xl'>Please wait while loading the Mcat RPC...</p>
+					<p>{texts[current]}</p>
+				</div>
+			</motion.div>
+		);
+	};
+
+	const [overlay, setOverlay] = useState(StartOverlay);
+
+	const SecretOverlay = () => {
+		return (
+			<motion.div
+				initial={{
+					opacity: 0,
+				}}
+				animate={{ opacity: 1 }}
+				exit={{
+					opacity: 0,
+				}}
+				className='bg-black bg-opacity-75 w-screen h-screen absolute text-white grid place-items-center text-center transition-all duration-200 backdrop-blur select-none z-20'
+			>
+				<div>
+					<h1 className='text-3xl'>Monstercat Widget URL</h1>
+					<p>Please enter the URL to your Stream Widget in the form below.</p>
+					<br />
+					<form
+						method='get'
+						onSubmit={(e) => {
+							e.preventDefault();
+							const data = new FormData(e.currentTarget);
+							const secret = data.get('secret').toString();
+							const scheme = 'https://player.monstercat.app/widget?code=owner-';
+							if (
+								!(
+									secret.length > scheme.length &&
+									secret.startsWith(scheme) &&
+									secret.includes(scheme)
+								)
+							) {
+								showNotification({
+									message: 'Invalid URL!',
+									title: 'Error',
+									color: 'red',
+								});
+								return;
+							}
+							saveData('/secret', secret);
+							showNotification({
+								message: 'Welcome to mcat-discord-rpc!',
+								color: 'green',
+							});
+							setOverlay(null);
+						}}
+					>
+						<PasswordInput
+							type='url'
+							placeholder='Widget URL...'
+							name='secret'
+							label='URL'
+						/>
+					</form>
+				</div>
+			</motion.div>
+		);
+	};
+
+	useEffect(() => {
+		fetch('http://localhost:8090/currentSong')
+			.then((res) => res.json())
+			.then((res) => {
+				setListeningData(res);
+			});
+		setInterval(() => {
+			fetch('http://localhost:8090/currentSong')
+				.then((res) => res.json())
+				.then((res) => {
+					setListeningData(res);
+				});
+		}, 15000);
+
+		fetch('http://localhost:8090/data', {
+			method: 'POST',
+		})
+			.then((res) => res.json())
+			.then((res) => {
+				setData(res);
+				setCurrent('validating');
+				setTimeType(res.timeType);
+				setCurrent('started');
+				if (!res.secret) {
+					setOverlay(SecretOverlay);
+					showNotification({
+						message:
+							'Please enter your Widget URL for Monstercat Discord RPC to work!',
+						color: 'yellow',
+					});
+				} else {
+					setOverlay(null);
+					showNotification({
+						message: 'Welcome to mcat-discord-rpc!',
+						color: 'green',
+					});
+				}
+			});
+	}, []);
+
+	return (
+		<MantineProvider theme={{ colorScheme: 'dark' }}>
+			<NotificationsProvider>
+				<div className='bg-neutral-900 text-white w-screen min-h-screen'>
+					<AnimatePresence exitBeforeEnter>{overlay}</AnimatePresence>
+					<div className='container mx-auto px-2'>
+						<h1 className='text-3xl'>Hi there!</h1>
+						<p>Welcome to the Monstercat Discord RPC!</p>
+						<Button
+							color='red'
+							variant='outline'
+							className='mr-2'
+							onClick={() => {
+								fetch('http://localhost:8090/stop', {
+									method: 'post',
+								});
+							}}
+						>
+							Stop
+						</Button>
+						<Button
+							color='green'
+							variant='outline'
+							className='mr-2'
+							onClick={() => {
+								fetch('http://localhost:8090/start', {
+									method: 'post',
+								});
+							}}
+						>
+							Start
+						</Button>
+						<Tooltip label='Stop the RPC completely' withArrow color={'grape'}>
+							<Button
+								color='grape'
+								variant='outline'
+								className='mr-2'
+								onClick={() => {
+									fetch('http://localhost:8090/kill', {
+										method: 'post',
+									});
+								}}
+							>
+								Kill
+							</Button>
+						</Tooltip>
+						<Tooltip
+							label='Reconnects the RPC to Discord. Useful to connect after killing'
+							withArrow
+							color={'yellow'}
+						>
+							<Button
+								color='yellow'
+								variant='outline'
+								className='mr-2'
+								onClick={() => {
+									fetch('http://localhost:8090/reconnect', {
+										method: 'post',
+									});
+								}}
+							>
+								Reconnect
+							</Button>
+						</Tooltip>
+						<Tooltip
+							label='Clears your secret and reloads this window'
+							withArrow
+							color={'indigo'}
+						>
+							<Button
+								color='indigo'
+								variant='outline'
+								onClick={() => {
+									fetch('http://localhost:8090/logout', {
+										method: 'post',
+									});
+
+									window.location.reload();
+								}}
+								className='mr-2'
+							>
+								Logout
+							</Button>
+						</Tooltip>
+
+						<hr className='my-6' />
+
+						<Accordion disableIconRotation>
+							<Accordion.Item
+								label='Settings'
+								icon={
+									<ThemeIcon color='violet' variant='light'>
+										<IconAdjustments size={14} />
+									</ThemeIcon>
+								}
+							>
+								<h3 className='text-2xl'>
+									Time type{' '}
+									<Tooltip
+										label='The settings are saving automatically'
+										withArrow
+										color={'green'}
+									>
+										<Badge color='green' variant='filled'>
+											Autosaving
+										</Badge>
+									</Tooltip>
+								</h3>
+								<p>Select the time type you want to use.</p>
+								<div className='my-4'></div>
+								<Select
+									placeholder='Pick a time type'
+									value={timeType}
+									data={[
+										{ value: 'remaining', label: 'Time remaining (Song)' },
+										{ value: 'elapsed', label: 'Time elapsed (Song)' },
+										{ value: 'total', label: 'Time listening (Total)' },
+									]}
+									onChange={(v) => {
+										setTimeType(v);
+										console.log(v);
+										const timeType = v;
+										saveData('/timeType', timeType);
+									}}
+								/>
+							</Accordion.Item>
+
+							<Accordion.Item
+								label='Current'
+								icon={
+									<ThemeIcon color={'orange'} variant='light'>
+										<IconHeadphones size={14}></IconHeadphones>
+									</ThemeIcon>
+								}
+							>
+								<div className='grid gap-4 grid-cols-4'>
+									<Tooltip
+										label={listeningData?.CurrentlyPlaying?.CatalogId}
+										withArrow
+									>
+										<img
+											src={`https://cdx.monstercat.com/?width=256&encoding=webp&url=https%3A%2F%2Fwww.monstercat.com%2Frelease%2F${listeningData?.CurrentlyPlaying?.CatalogId}%2Fcover`}
+											alt='Cover'
+											className='col-span-1'
+										/>
+									</Tooltip>
+									<div className='col-span-3'>
+										<p className='text-3xl'>
+											{listeningData?.CurrentlyPlaying?.TrackTitle}{' '}
+											{listeningData?.CurrentlyPlaying?.TrackVersion != ''
+												? `(${listeningData?.CurrentlyPlaying?.TrackVersion})`
+												: ''}
+										</p>
+										<p className='text-2xl'>
+											{listeningData?.CurrentlyPlaying?.ArtistsTitle}
+										</p>
+										<p>from {listeningData?.CurrentlyPlaying?.ReleaseTitle}</p>
+									</div>
+								</div>
+							</Accordion.Item>
+						</Accordion>
+					</div>
+				</div>
+			</NotificationsProvider>
+		</MantineProvider>
+	);
+};
+
+export default App;
+
+function saveData(path: string, data: string) {
+	fetch('http://localhost:8090/save', {
+		headers: {
+			path: path,
+			data: data,
+		},
+		method: 'post',
+	});
+}
