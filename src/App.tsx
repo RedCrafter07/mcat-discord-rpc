@@ -2,6 +2,7 @@ import {
 	Accordion,
 	Badge,
 	Button,
+	FloatingTooltip,
 	MantineProvider,
 	PasswordInput,
 	Select,
@@ -145,7 +146,7 @@ const App = () => {
 				.then((res) => {
 					setListeningData(res);
 				});
-		}, 15000);
+		}, 5000);
 
 		fetch('http://localhost:8090/data', {
 			method: 'POST',
@@ -176,7 +177,29 @@ const App = () => {
 	return (
 		<MantineProvider theme={{ colorScheme: 'dark' }}>
 			<NotificationsProvider>
-				<div className='bg-neutral-900 text-white w-screen min-h-screen'>
+				<div className='bg-neutral-900 w-screen h-screen top-0 left-0 -z-10 fixed'>
+					<AnimatePresence exitBeforeEnter>
+						<motion.img
+							initial={{
+								opacity: 0,
+							}}
+							animate={{
+								opacity: 1,
+							}}
+							exit={{
+								opacity: 0,
+							}}
+							className='bg-center bg-cover w-full h-auto blur-3xl absolute top-0 left-0'
+							src={`https://cdx.monstercat.com/?width=256&encoding=webp&url=https%3A%2F%2Fwww.monstercat.com%2Frelease%2F${listeningData?.CurrentlyPlaying?.CatalogId}%2Fcover`}
+							alt=''
+							key={listeningData?.CurrentlyPlaying?.CatalogId}
+						/>
+					</AnimatePresence>
+					{listeningData?.CurrentlyPlaying ? (
+						<div className='absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 z-0'></div>
+					) : null}
+				</div>
+				<div className='text-white w-screen min-h-screen'>
 					<AnimatePresence exitBeforeEnter>{overlay}</AnimatePresence>
 					<div className='container mx-auto px-2'>
 						<h1 className='text-3xl'>Hi there!</h1>
@@ -264,7 +287,16 @@ const App = () => {
 
 						<hr className='my-6' />
 
-						<Accordion disableIconRotation>
+						<Accordion
+							disableIconRotation
+							styles={{
+								control: {
+									':hover': {
+										backgroundColor: '#2c2e3333',
+									},
+								},
+							}}
+						>
 							<Accordion.Item
 								label='Settings'
 								icon={
@@ -290,6 +322,11 @@ const App = () => {
 								<Select
 									placeholder='Pick a time type'
 									value={timeType}
+									styles={{
+										input: {
+											backgroundColor: '#2c2e3377',
+										},
+									}}
 									data={[
 										{ value: 'remaining', label: 'Time remaining (Song)' },
 										{ value: 'elapsed', label: 'Time elapsed (Song)' },
@@ -313,16 +350,16 @@ const App = () => {
 								}
 							>
 								<div className='grid gap-4 grid-cols-4'>
-									<Tooltip
+									<FloatingTooltip
 										label={listeningData?.CurrentlyPlaying?.CatalogId}
-										withArrow
 									>
 										<img
+											key={`${listeningData?.CurrentlyPlaying?.CatalogId} current`}
 											src={`https://cdx.monstercat.com/?width=256&encoding=webp&url=https%3A%2F%2Fwww.monstercat.com%2Frelease%2F${listeningData?.CurrentlyPlaying?.CatalogId}%2Fcover`}
 											alt='Cover'
 											className='col-span-1'
 										/>
-									</Tooltip>
+									</FloatingTooltip>
 									<div className='col-span-3'>
 										<p className='text-3xl'>
 											{listeningData?.CurrentlyPlaying?.TrackTitle}{' '}
