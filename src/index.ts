@@ -1,6 +1,8 @@
 import { app, BrowserWindow, Tray, Menu, nativeImage } from 'electron';
 import * as path from 'path';
 import server from './lib/server';
+import http from 'http';
+import fs from 'fs';
 
 server();
 
@@ -14,6 +16,10 @@ if (require('electron-squirrel-startup')) {
 	// eslint-disable-line global-require
 	app.quit();
 }
+
+let logoPath: string = path.join(__dirname, 'mcat.png');
+
+console.log(logoPath);
 
 let tray: Tray | null;
 
@@ -42,7 +48,7 @@ const createMcat = (): void => {
 
 	mcatWindow.setMenu(null);
 
-	mcatWindow.setIcon(path.join(__dirname, '../../mcat.ico'));
+	mainWindow.setIcon(nativeImage.createFromPath(logoPath));
 
 	// and load the index.html of the app.
 	mcatWindow.loadURL('https://player.monstercat.app');
@@ -65,13 +71,13 @@ const createWindow = (): void => {
 		},
 	});
 
-	// mainWindow.setMenu(null);
+	mainWindow.setMenu(null);
 
 	mainWindow.on('close', () => {
 		mainWindow = null;
 	});
 
-	mainWindow.setIcon(path.join(__dirname, '../../mcat.ico'));
+	mainWindow.setIcon(nativeImage.createFromPath(logoPath));
 
 	// and load the index.html of the app.
 	mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
@@ -82,10 +88,40 @@ const createWindow = (): void => {
 // Some APIs can only be used after this event occurs.
 app.on('ready', createWindow);
 
-app.whenReady().then(() => {
+app.whenReady().then(async () => {
 	createWindow();
+	await downloadLogo();
 	runTray();
 });
+
+const downloadLogo = async () => {
+	return new Promise<void>((resolve) => {
+		if (!fs.existsSync('./mcat.png')) {
+			resolve();
+			logoPath = path.join(__dirname, 'mcat.png');
+			return;
+		}
+
+		logoPath = path.join(__dirname, 'mcat.png');
+
+		const file = fs.createWriteStream(path.join(__dirname, 'mcat.png'));
+		http.get(
+			'http://storage.googleapis.com/monstercat/share.png',
+			(response) => {
+				response.pipe(file);
+
+				file.on('finish', () => {
+					file.close();
+					console.log('Logo Download Completed');
+					mainWindow.close();
+					logoPath = file.path as string;
+					createWindow();
+					resolve();
+				});
+			},
+		);
+	});
+};
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
@@ -106,7 +142,10 @@ app.on('activate', () => {
 // code. You can also put them in separate files and import them here.
 
 function runTray() {
-	tray = new Tray(path.join(__dirname, '../../mcat.ico'));
+	const icon = nativeImage
+		.createFromPath(path.resolve(__dirname, 'mcat.png'))
+		.resize({ width: 32, height: 32 });
+	tray = new Tray(icon);
 	const contextMenu = Menu.buildFromTemplate([
 		{ label: 'Mcat-Dc', type: 'normal', enabled: false },
 		{
