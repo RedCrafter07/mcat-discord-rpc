@@ -7,11 +7,9 @@ import {
 	MantineProvider,
 	PasswordInput,
 	Select,
-	TextInput,
 	ThemeIcon,
 	Tooltip,
 } from '@mantine/core';
-import { useMouse } from '@mantine/hooks';
 import {
 	NotificationsProvider,
 	showNotification,
@@ -23,7 +21,7 @@ import {
 	IconHeadphones,
 } from '@tabler/icons';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 type CurrentlyPlaying = {
 	CurrentlyPlaying?: {
