@@ -1,3 +1,5 @@
+<img src=".github/AppScreen.png" width="100%" draggable="false"><br>
+
 # mcat-discord-rpc
 A Discord RPC App for the Monstercat Player
 
