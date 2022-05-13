@@ -19,4 +19,4 @@ Well, I love the Spotify RPC for Discord, but I also love the Monstercat Player.
 
 PS: To get notified when there's a new version, you can also watch this repository for releases by choosing a custom watch method ;)
 
-<img src=".github/DiscordRPC.png" width="100%" draggable="false">
+<img src=".github/DiscordRPC.png" draggable="false">
