@@ -1,8 +1,13 @@
-import { app, BrowserWindow, Tray, Menu, nativeImage } from 'electron';
+import {
+	app,
+	BrowserWindow,
+	Tray,
+	Menu,
+	nativeImage,
+	NativeImage,
+} from 'electron';
 import * as path from 'path';
 import server from './lib/server';
-import http from 'http';
-import fs from 'fs';
 
 server();
 
@@ -17,9 +22,17 @@ if (require('electron-squirrel-startup')) {
 	app.quit();
 }
 
-let logoPath: string = path.join(__dirname, 'mcat.png');
+let ico: NativeImage;
 
-console.log(logoPath);
+if (process.env.NODE_ENV == 'development') {
+	ico = nativeImage.createFromPath(
+		path.join(__dirname, '..', '..', 'mcat.png'),
+	);
+} else {
+	ico = nativeImage.createFromPath(path.join(__dirname, 'mcat.png'));
+}
+
+console.log(process.env.NODE_ENV);
 
 let tray: Tray | null;
 
@@ -48,7 +61,7 @@ const createMcat = (): void => {
 
 	mcatWindow.setMenu(null);
 
-	mainWindow.setIcon(nativeImage.createFromPath(logoPath));
+	mainWindow.setIcon(ico);
 
 	// and load the index.html of the app.
 	mcatWindow.loadURL('https://player.monstercat.app');
@@ -77,7 +90,7 @@ const createWindow = (): void => {
 		mainWindow = null;
 	});
 
-	mainWindow.setIcon(nativeImage.createFromPath(logoPath));
+	mainWindow.setIcon(ico);
 
 	// and load the index.html of the app.
 	mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
@@ -90,11 +103,11 @@ app.on('ready', createWindow);
 
 app.whenReady().then(async () => {
 	createWindow();
-	await downloadLogo();
+	// await downloadLogo();
 	runTray();
 });
 
-const downloadLogo = async () => {
+/* const downloadLogo = async () => {
 	return new Promise<void>((resolve) => {
 		if (!fs.existsSync('./mcat.png')) {
 			resolve();
@@ -121,7 +134,7 @@ const downloadLogo = async () => {
 			},
 		);
 	});
-};
+}; */
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
@@ -142,12 +155,17 @@ app.on('activate', () => {
 // code. You can also put them in separate files and import them here.
 
 function runTray() {
-	const icon = nativeImage
-		.createFromPath(path.resolve(__dirname, 'mcat.png'))
-		.resize({ width: 32, height: 32 });
+	const icon = ico.resize({ width: 32, height: 32 });
 	tray = new Tray(icon);
 	const contextMenu = Menu.buildFromTemplate([
 		{ label: 'Mcat-Dc', type: 'normal', enabled: false },
+		{
+			label: 'Main Window',
+			type: 'normal',
+			click() {
+				createWindow();
+			},
+		},
 		{
 			label: 'Player',
 			type: 'normal',
@@ -169,4 +187,6 @@ function runTray() {
 	});
 
 	tray.setContextMenu(contextMenu);
+
+	tray.setToolTip('mcat-discord-rpc');
 }
