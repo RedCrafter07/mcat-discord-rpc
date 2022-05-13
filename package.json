@@ -17,7 +17,9 @@
 	"license": "GPL-3.0-or-later",
 	"config": {
 		"forge": {
-			"packagerConfig": {},
+			"packagerConfig": {
+				"icon": "D:\\coding\\mcat-discord-rpc\\mcat.ico"
+			},
 			"makers": [
 				{
 					"name": "@electron-forge/maker-squirrel",
