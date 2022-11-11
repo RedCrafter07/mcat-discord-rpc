@@ -3,6 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   '@babel/core': 7.20.2
   '@emotion/react': ^11.10.5
+  '@fontsource/figtree': ^4.5.1
   '@mantine/core': ^5.7.1
   '@mantine/hooks': ^5.7.1
   '@mantine/notifications': ^5.7.1
@@ -92,6 +93,7 @@ specifiers:
 dependencies:
   '@babel/core': 7.20.2
   '@emotion/react': 11.10.5_kepzycimjzwwru3yrovpoz46x4
+  '@fontsource/figtree': 4.5.1
   '@mantine/core': 5.7.1_rpbu45oak5njhv4mrqfytqjmse
   '@mantine/hooks': 5.7.1_react@18.2.0
   '@mantine/notifications': 5.7.1_zuzwjqu2bpvvkpc66ml3tmhnfm
@@ -730,6 +732,10 @@ packages:
       '@floating-ui/dom': 1.0.4
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
+    dev: false
+
+  /@fontsource/figtree/4.5.1:
+    resolution: {integrity: sha512-VZjPzbD8+HdTgWI29myAkCsGiidTvCUJ18gsqd+g4ZkdpNFphn/zwlWiudbiICjrQMbC9Q+ZFkDmE+s9ysfGFg==}
     dev: false
 
   /@gar/promisify/1.1.3:

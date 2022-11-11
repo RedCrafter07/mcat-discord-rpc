@@ -98,6 +98,7 @@
 	"dependencies": {
 		"@babel/core": "7.20.2",
 		"@emotion/react": "^11.10.5",
+		"@fontsource/figtree": "^4.5.1",
 		"@mantine/core": "^5.7.1",
 		"@mantine/hooks": "^5.7.1",
 		"@mantine/notifications": "^5.7.1",
