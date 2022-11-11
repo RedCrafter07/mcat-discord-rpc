@@ -15,13 +15,6 @@
 		"name": "RedCrafter07",
 		"email": "hi@r07.dev"
 	},
-	"contributors": [
-		{
-			"name": "Amila Welihinda",
-			"email": "amilajack@gmail.com",
-			"url": "https://github.com/amilajack"
-		}
-	],
 	"main": "./src/main/main.ts",
 	"scripts": {
 		"build": "concurrently \"npm run build:main\" \"npm run build:renderer\"",
