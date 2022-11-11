@@ -123,7 +123,6 @@ const App = () => {
 						}}
 					>
 						<PasswordInput
-							type="url"
 							placeholder="Widget URL..."
 							name="secret"
 							label="URL"
