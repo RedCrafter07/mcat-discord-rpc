@@ -1,7 +1,10 @@
 module.exports = {
-	content: ['src/*.tsx'],
-	theme: {
-		extend: {},
-	},
-	plugins: [],
+  content: ['./src/**/*.{ejs,tsx}'],
+  theme: {
+    extend: {},
+  },
+  daisyui: {
+    themes: ['dracula'],
+  },
+  plugins: [require('daisyui')],
 };
