@@ -229,7 +229,11 @@
 		},
 		"win": {
 			"target": [
-				"nsis"
+				"nsis",
+				"msi",
+				"nsis-web",
+				"zip",
+				"portable"
 			]
 		},
 		"linux": {
