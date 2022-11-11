@@ -307,7 +307,7 @@ const App = () => {
 								</Button>
 							</Tooltip>
 
-							<hr className="my-6" />
+							<div className="my-6 h-px bg-white opacity-25" />
 
 							<Accordion
 								styles={{
