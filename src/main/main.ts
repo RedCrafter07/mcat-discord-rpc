@@ -34,6 +34,7 @@ export default class AppUpdater {
 let tray: Tray;
 
 let mainWindow: BrowserWindow | null = null;
+let mcatWindow: BrowserWindow | null = null;
 
 if (process.env.NODE_ENV === 'production') {
 	const sourceMapSupport = require('source-map-support');
@@ -114,6 +115,50 @@ const createWindow = async () => {
 	// Remove this if your app does not use auto updates
 	// eslint-disable-next-line
 	new AppUpdater();
+};
+
+const createMcat = async () => {
+	if (isDebug) {
+		await installExtensions();
+	}
+	mcatWindow = new BrowserWindow({
+		show: false,
+		width: 1024,
+		height: 750,
+		minWidth: 540,
+		minHeight: 750,
+		icon: getAssetPath('icon.png'),
+		title: 'Monstercat Discord RPC',
+		webPreferences: {
+			nodeIntegration: true,
+			contextIsolation: false,
+		},
+	});
+
+	mcatWindow.loadURL('https://player.monstercat.app');
+
+	mcatWindow.on('ready-to-show', () => {
+		if (!mcatWindow) {
+			throw new Error('"mcatWindow" is not defined');
+		}
+		if (process.env.START_MINIMIZED) {
+			mcatWindow.minimize();
+		} else {
+			mcatWindow.show();
+		}
+	});
+
+	mcatWindow.setMenu(null);
+
+	mcatWindow.on('closed', () => {
+		mcatWindow = null;
+	});
+
+	// Open urls in the user's browser
+	mcatWindow.webContents.setWindowOpenHandler((edata) => {
+		shell.openExternal(edata.url);
+		return { action: 'deny' };
+	});
 };
 
 /**
@@ -212,4 +257,9 @@ ipc.on('save', async (e, path, data) => {
 
 ipc.on('currentSong', async (e) => {
 	e.reply('currentSong', await fetchCurrentSong());
+});
+
+ipc.on('open-player', async (e) => {
+	createMcat();
+	e.reply('open-player');
 });
