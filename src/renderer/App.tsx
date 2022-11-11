@@ -224,88 +224,85 @@ const App = () => {
 						<div className="container mx-auto px-2">
 							<h1 className="text-3xl">Hi there!</h1>
 							<p>Welcome to the Monstercat Discord RPC!</p>
-							<Tooltip
-								label="Stop the RPC"
-								withArrow
-								color={'red'}
-							>
-								<Button
-									color="red"
-									variant="outline"
-									className="mr-2"
-									onClick={() => {
-										ipc.send('stop');
-									}}
+							<div className="flex flex-row gap-2">
+								<Tooltip
+									label="Stop the RPC"
+									withArrow
+									color={'red'}
 								>
-									Stop
-								</Button>
-							</Tooltip>
-							<Tooltip
-								label="Start the RPC"
-								withArrow
-								color={'green'}
-							>
-								<Button
-									color="green"
-									variant="outline"
-									className="mr-2"
-									onClick={() => {
-										ipc.send('start');
-									}}
+									<Button
+										color="red"
+										variant="outline"
+										onClick={() => {
+											ipc.send('stop');
+										}}
+									>
+										Stop
+									</Button>
+								</Tooltip>
+								<Tooltip
+									label="Start the RPC"
+									withArrow
+									color={'green'}
 								>
-									Start
-								</Button>
-							</Tooltip>
-							<Tooltip
-								label="Stop the RPC completely"
-								withArrow
-								color={'grape'}
-							>
-								<Button
-									color="grape"
-									variant="outline"
-									className="mr-2"
-									onClick={() => {
-										ipc.send('kill');
-									}}
+									<Button
+										color="green"
+										variant="outline"
+										onClick={() => {
+											ipc.send('start');
+										}}
+									>
+										Start
+									</Button>
+								</Tooltip>
+								<Tooltip
+									label="Stop the RPC completely"
+									withArrow
+									color={'grape'}
 								>
-									Kill
-								</Button>
-							</Tooltip>
-							<Tooltip
-								label="Reconnects the RPC to Discord. Useful to connect after killing"
-								withArrow
-								color={'yellow'}
-							>
-								<Button
-									color="yellow"
-									variant="outline"
-									className="mr-2"
-									onClick={() => {
-										ipc.send('reconnect');
-									}}
+									<Button
+										color="grape"
+										variant="outline"
+										onClick={() => {
+											ipc.send('kill');
+										}}
+									>
+										Kill
+									</Button>
+								</Tooltip>
+								<Tooltip
+									label="Reconnects the RPC to Discord. Useful to connect after killing"
+									withArrow
+									color={'yellow'}
 								>
-									Reconnect
-								</Button>
-							</Tooltip>
-							<Tooltip
-								label="Clears your secret and reloads this window"
-								withArrow
-								color={'indigo'}
-							>
-								<Button
-									color="indigo"
-									variant="outline"
-									onClick={() => {
-										ipc.send('logout');
+									<Button
+										color="yellow"
+										variant="outline"
+										onClick={() => {
+											ipc.send('reconnect');
+										}}
+									>
+										Reconnect
+									</Button>
+								</Tooltip>
+								<Tooltip
+									label="Clears your secret and reloads this window"
+									withArrow
+									color={'indigo'}
+								>
+									<Button
+										color="indigo"
+										variant="outline"
+										onClick={() => {
+											ipc.send('logout');
 
-										window.location.reload();
-									}}
-									className="mr-2"
-								>
-									Logout
-								</Button>
-							</Tooltip>
+											window.location.reload();
+										}}
+									>
+										Logout
+									</Button>
+								</Tooltip>
+							</div>
 
 							<div className="my-6 h-px bg-white opacity-25" />
 
