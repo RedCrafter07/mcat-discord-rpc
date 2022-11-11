@@ -173,6 +173,9 @@ ipc.on('reconnect', (e) => {
 
 ipc.on('logout', async (e) => {
 	rpc.stopRPC();
+
+	await db.delete('/secret');
+
 	e.reply('logout');
 });
 
