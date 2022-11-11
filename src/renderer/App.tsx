@@ -303,6 +303,21 @@ const App = () => {
 										Logout
 									</Button>
 								</Tooltip>
+								<Tooltip
+									label="Open a window of the Monstercat Player (using mcat-discord-rpc)"
+									withArrow
+									color="orange"
+								>
+									<Button
+										color="orange"
+										variant="outline"
+										onClick={() => {
+											ipc.send('open-player');
+										}}
+									>
+										Open player
+									</Button>
+								</Tooltip>
 							</div>
 
 							<div className="my-6 h-px bg-white opacity-25" />
