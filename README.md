@@ -28,3 +28,7 @@ PS: To get notified when there's a new version, you can also watch this reposito
 ## Info
 
 Since version 1.1, mcat-discord-rpc is using my electron react boilerplate. You can find it [here](https://github.com/RedCrafter07/erb-template). It's based on the [electron-react-boilerplate](https://github.com/electron-react-boilerplate/electron-react-boilerplate).
+
+## Affiliation Notice
+
+mcat-discord-rpc is a third-party application and is not affiliated with Monstercat or any of its subsidiaries.
