@@ -8,7 +8,14 @@
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
 import path from 'path';
-import { app, BrowserWindow, shell, ipcMain as ipc } from 'electron';
+import {
+	app,
+	BrowserWindow,
+	shell,
+	ipcMain as ipc,
+	Tray,
+	Menu,
+} from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import { resolveHtmlPath } from './util';
@@ -23,6 +30,8 @@ export default class AppUpdater {
 		autoUpdater.checkForUpdatesAndNotify();
 	}
 }
+
+let tray: Tray;
 
 let mainWindow: BrowserWindow | null = null;
 
@@ -51,19 +60,18 @@ const installExtensions = async () => {
 		.catch(console.log);
 };
 
+const RESOURCES_PATH = app.isPackaged
+	? path.join(process.resourcesPath, 'assets')
+	: path.join(__dirname, '../../assets');
+
+const getAssetPath = (...paths: string[]): string => {
+	return path.join(RESOURCES_PATH, ...paths);
+};
+
 const createWindow = async () => {
 	if (isDebug) {
 		await installExtensions();
 	}
-
-	const RESOURCES_PATH = app.isPackaged
-		? path.join(process.resourcesPath, 'assets')
-		: path.join(__dirname, '../../assets');
-
-	const getAssetPath = (...paths: string[]): string => {
-		return path.join(RESOURCES_PATH, ...paths);
-	};
-
 	mainWindow = new BrowserWindow({
 		show: false,
 		width: 1024,
@@ -123,6 +131,38 @@ app.on('window-all-closed', () => {
 app.whenReady()
 	.then(() => {
 		createWindow();
+
+		tray = new Tray(getAssetPath('icon.png'));
+
+		tray.setToolTip('Monstercat Discord RPC');
+
+		const contextMenu = Menu.buildFromTemplate([
+			{ label: 'Mcat-Dc', type: 'normal', enabled: false },
+			{
+				label: 'Main Window',
+				type: 'normal',
+				click() {
+					createWindow();
+				},
+			},
+			{
+				label: 'Player',
+				type: 'normal',
+				click: () => {
+					createMcat();
+				},
+			},
+			{
+				label: 'Quit',
+				type: 'normal',
+				click: () => {
+					app.quit();
+				},
+			},
+		]);
+
+		tray.setContextMenu(contextMenu);
+
 		app.on('activate', () => {
 			// On macOS it's common to re-create a window in the app when the
 			// dock icon is clicked and there are no other windows open.
