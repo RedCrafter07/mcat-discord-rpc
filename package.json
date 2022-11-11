@@ -1,5 +1,6 @@
 {
 	"description": "A Discord Rich Presence for the Monstercat Player",
+	"name": "mcat-discord-rpc",
 	"homepage": "https://github.com/RedCrafter07/mcat-discord-rpc#readme",
 	"bugs": {
 		"url": "https://github.com/RedCrafter07/mcat-discord-rpc/issues"
