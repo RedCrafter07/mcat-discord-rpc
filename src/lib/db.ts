@@ -39,6 +39,7 @@ async function push(path: string, data: any) {
 }
 
 async function initDatabase() {
+	console.log(dataPath);
 	const data = await getData();
 	if (!data.timeType) data.timeType = 'remaining';
 	if (!data.show)
@@ -49,7 +50,7 @@ async function initDatabase() {
 			albumName: true,
 			playButton: true,
 		};
-
+	if (!data.openPlayerExternally) data.openPlayerExternally = true;
 	await push('/', data);
 }
 
