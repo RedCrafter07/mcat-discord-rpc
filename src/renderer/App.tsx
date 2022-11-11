@@ -224,6 +224,7 @@ const App = () => {
 						<div className="container mx-auto px-2">
 							<h1 className="text-3xl">Hi there!</h1>
 							<p>Welcome to the Monstercat Discord RPC!</p>
+							<div className="my-4" />
 							<div className="flex flex-row gap-2">
 								<Tooltip
 									label="Stop the RPC"
