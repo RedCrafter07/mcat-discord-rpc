@@ -421,6 +421,9 @@ const App = () => {
 															'_blank'
 														);
 													}}
+													disabled={
+														!listeningData?.CurrentlyPlaying
+													}
 												>
 													Open in player
 												</Button>
