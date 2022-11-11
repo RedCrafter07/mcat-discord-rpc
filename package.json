@@ -1,18 +1,17 @@
 {
-	"description": "A foundation for scalable desktop apps",
-	"homepage": "https://github.com/electron-react-boilerplate/electron-react-boilerplate#readme",
+	"description": "A Discord Rich Presence for the Monstercat Player",
+	"homepage": "https://github.com/RedCrafter07/mcat-discord-rpc#readme",
 	"bugs": {
-		"url": "https://github.com/electron-react-boilerplate/electron-react-boilerplate/issues"
+		"url": "https://github.com/RedCrafter07/mcat-discord-rpc/issues"
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/electron-react-boilerplate/electron-react-boilerplate.git"
+		"url": "git+https://github.com/RedCrafter07/mcat-discord-rpc.git"
 	},
 	"license": "MIT",
 	"author": {
-		"name": "Electron React Boilerplate Maintainers",
-		"email": "electronreactboilerplate@gmail.com",
-		"url": "https://electron-react-boilerplate.js.org"
+		"name": "RedCrafter07",
+		"email": "hi@r07.dev"
 	},
 	"contributors": [
 		{
@@ -190,8 +189,8 @@
 		"webpack-merge": "^5.8.0"
 	},
 	"build": {
-		"productName": "ElectronReact",
-		"appId": "org.erb.ElectronReact",
+		"productName": "mcat-discord-rpc",
+		"appId": "dev.r07.mcat-discord-rpc",
 		"asar": true,
 		"asarUnpack": "**\\*.{node,dll}",
 		"files": [
@@ -249,12 +248,9 @@
 		],
 		"publish": {
 			"provider": "github",
-			"owner": "electron-react-boilerplate",
-			"repo": "electron-react-boilerplate"
+			"owner": "RedCrafter07",
+			"repo": "mcat-discord-rpc"
 		}
-	},
-	"collective": {
-		"url": "https://opencollective.com/electron-react-boilerplate-594"
 	},
 	"devEngines": {
 		"node": ">=14.x",
