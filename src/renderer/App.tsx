@@ -2,6 +2,7 @@ import {
 	Accordion,
 	Badge,
 	Button,
+	Checkbox,
 	Loader,
 	MantineProvider,
 	PasswordInput,
@@ -45,6 +46,8 @@ const App = () => {
 	const [listeningData, setListeningData] = useState<CurrentlyPlaying>(null);
 
 	const [timeType, setTimeType] = useState('remaining');
+
+	const [openPlayerExternally, setOpenPlayerExternally] = useState(true);
 
 	const StartOverlay = () => {
 		return (
@@ -160,6 +163,8 @@ const App = () => {
 			}, 5000);
 
 			const data = await fetchIPC('data');
+
+			setOpenPlayerExternally(data.openPlayerExternally || false);
 
 			updateNotification({
 				id: 'start-notification',
@@ -312,7 +317,12 @@ const App = () => {
 										color="orange"
 										variant="outline"
 										onClick={() => {
-											ipc.send('open-player');
+											if (openPlayerExternally)
+												openPlayer(
+													'https://player.monstercat.app',
+													false
+												);
+											else ipc.send('open-player');
 										}}
 									>
 										Open player
@@ -416,9 +426,16 @@ const App = () => {
 													variant="outline"
 													color="green"
 													onClick={() => {
-														open(
-															`https://player.monstercat.app/release/${listeningData?.CurrentlyPlaying?.CatalogId}`,
-															'_blank'
+														const baseURL = `https://player.monstercat.app/release`;
+														const catalogID =
+															listeningData
+																?.CurrentlyPlaying
+																?.CatalogId;
+														const playerURL = `${baseURL}/${catalogID}`;
+
+														openPlayer(
+															playerURL,
+															!openPlayerExternally
 														);
 													}}
 													disabled={
@@ -495,6 +512,23 @@ const App = () => {
 												saveData('/timeType', timeType);
 											}}
 										/>
+
+										<div className="my-4" />
+
+										<Checkbox
+											label="Open player internally"
+											checked={!openPlayerExternally}
+											onChange={(e) => {
+												setOpenPlayerExternally(
+													!e.currentTarget.checked
+												);
+
+												saveData(
+													'/openPlayerExternally',
+													!openPlayerExternally
+												);
+											}}
+										/>
 									</Accordion.Panel>
 								</Accordion.Item>
 							</Accordion>
@@ -508,7 +542,7 @@ const App = () => {
 
 export default App;
 
-async function saveData(path: string, data: string) {
+async function saveData(path: string, data: any) {
 	await ipc.send('save', path, data);
 }
 
@@ -520,4 +554,13 @@ function fetchIPC(event: string) {
 			resolve(data);
 		});
 	});
+}
+
+function openPlayer(url: string, internal: boolean = false) {
+	if (internal) {
+		ipc.send('open-player', url);
+		return;
+	}
+
+	open(url, '_blank');
 }
