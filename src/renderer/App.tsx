@@ -396,6 +396,21 @@ const App = () => {
 														?.CatalogId ||
 														'Unknown'}
 												</p>
+
+												<div className="my-2" />
+
+												<Button
+													variant="outline"
+													color="green"
+													onClick={() => {
+														open(
+															`https://player.monstercat.app/release/${listeningData?.CurrentlyPlaying?.CatalogId}`,
+															'_blank'
+														);
+													}}
+												>
+													Open in player
+												</Button>
 											</div>
 										</div>
 									</Accordion.Panel>
