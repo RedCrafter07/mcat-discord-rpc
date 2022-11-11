@@ -70,6 +70,7 @@ const getAssetPath = (...paths: string[]): string => {
 };
 
 const createWindow = async () => {
+	if (mainWindow) return mainWindow.show();
 	if (isDebug) {
 		await installExtensions();
 	}
@@ -118,6 +119,7 @@ const createWindow = async () => {
 };
 
 const createMcat = async (url?: string) => {
+	if (mcatWindow) return mainWindow.show();
 	if (isDebug) {
 		await installExtensions();
 	}
@@ -165,12 +167,8 @@ const createMcat = async (url?: string) => {
  * Add event listeners...
  */
 
-app.on('window-all-closed', () => {
-	// Respect the OSX convention of having the application in memory even
-	// after all windows have been closed
-	if (process.platform !== 'darwin') {
-		app.quit();
-	}
+app.on('window-all-closed', (e: any) => {
+	e.preventDefault();
 });
 
 app.whenReady()
@@ -207,6 +205,10 @@ app.whenReady()
 		]);
 
 		tray.setContextMenu(contextMenu);
+
+		tray.on('click', () => {
+			createWindow();
+		});
 
 		app.on('activate', () => {
 			// On macOS it's common to re-create a window in the app when the
