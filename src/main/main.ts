@@ -141,7 +141,7 @@ ipc.on('start', (e) => {
 });
 
 ipc.on('stop', (e) => {
-	rpc.stopRPC();
+	rpc.killRPC();
 	e.reply('stop');
 });
 
