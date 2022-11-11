@@ -372,11 +372,10 @@ const App = () => {
 												</p>
 												<p>
 													from{' '}
-													{
-														listeningData
-															?.CurrentlyPlaying
-															?.ReleaseTitle
-													}
+													{listeningData
+														?.CurrentlyPlaying
+														?.ReleaseTitle ||
+														'Unknown'}
 												</p>
 												{listeningData?.CurrentlyPlaying
 													?.TrackVersion ==
@@ -390,6 +389,13 @@ const App = () => {
 												) : (
 													''
 												)}
+												<p className="text-sm">
+													Catalog ID:{' '}
+													{listeningData
+														?.CurrentlyPlaying
+														?.CatalogId ||
+														'Unknown'}
+												</p>
 											</div>
 										</div>
 									</Accordion.Panel>
