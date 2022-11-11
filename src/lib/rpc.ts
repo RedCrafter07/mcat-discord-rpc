@@ -19,11 +19,11 @@ const totalTime = new Date();
 let int: NodeJS.Timer;
 
 (async () => {
-	handleCurrentSong(await await fetchCurrentSong());
+	handleCurrentSong(await fetchCurrentSong());
 })();
 
 setInterval(async () => {
-	handleCurrentSong(await await fetchCurrentSong());
+	handleCurrentSong(await fetchCurrentSong());
 }, 5000);
 
 async function rpcState(enabled: boolean) {
@@ -86,7 +86,9 @@ type CurrentlyPlaying = {
 };
 
 async function handleCurrentSong(input: CurrentlyPlaying) {
-	const data: 'remaining' | 'elapsed' | 'total' = await db.getData('/timeType');
+	if (!input) return;
+	const data: 'remaining' | 'elapsed' | 'total' =
+		(await db.getData()).timeType || 'remaining';
 	if (!input.playing) {
 		utils.setRPC({
 			state: 'Paused',
