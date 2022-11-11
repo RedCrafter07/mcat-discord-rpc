@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+	font-family: 'Figtree', serif;
+}
+
 h1 {
 	@apply text-3xl;
 }
