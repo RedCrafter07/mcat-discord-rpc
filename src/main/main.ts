@@ -129,22 +129,6 @@ app.whenReady()
 	})
 	.catch(console.log);
 
-ipc.on('window.close', () => {
-	mainWindow?.close();
-});
-
-ipc.on('window.minimize', () => {
-	mainWindow?.minimize();
-});
-
-ipc.on('window.maximize', () => {
-	if (mainWindow?.isMaximized()) {
-		mainWindow?.unmaximize();
-	} else {
-		mainWindow?.maximize();
-	}
-});
-
 ipc.on('data', async (e) => {
 	const data = await db.getData();
 
