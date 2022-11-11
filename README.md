@@ -1,13 +1,17 @@
 <img src=".github/AppScreen.png" width="100%" draggable="false"><br>
 
 # mcat-discord-rpc
+
 A Discord RPC App for the Monstercat Player
 
 ## But why?
-Well, I love the Spotify RPC for Discord, but I also love the Monstercat Player. But there was something missing... You probably guessed it, I wanted a Discord RPC for it. That's why I developed this application :)
+
+Well, I love the Spotify RPC for Discord and I also love the Monstercat Player. But there was something missing... You probably guessed it, I wanted a Discord RPC for it. That's why I developed this application.
 
 ## How to use
-1. Create or login with your [Monstercat Account](https://monstercat.com) and go to the Monstercat Player. 
+
+0. Create a [Monstercat Account](https://monstercat.com)
+1. Log in to [the player](https://player.monstercat.app) using your account.
 2. Open your Discord Client
 3. Download and open this application (Go to releases on the right)
 4. Go to the player settings
@@ -20,3 +24,7 @@ Well, I love the Spotify RPC for Discord, but I also love the Monstercat Player.
 PS: To get notified when there's a new version, you can also watch this repository for releases by choosing a custom watch method ;)
 
 <img src=".github/DiscordRPC.png" draggable="false">
+
+## Info
+
+Since version 1.1, mcat-discord-rpc is using my electron react boilerplate. You can find it [here](https://github.com/RedCrafter07/erb-template). It's based on the [electron-react-boilerplate](https://github.com/electron-react-boilerplate/electron-react-boilerplate).
