@@ -117,7 +117,7 @@ const createWindow = async () => {
 	new AppUpdater();
 };
 
-const createMcat = async () => {
+const createMcat = async (url?: string) => {
 	if (isDebug) {
 		await installExtensions();
 	}
@@ -135,7 +135,7 @@ const createMcat = async () => {
 		},
 	});
 
-	mcatWindow.loadURL('https://player.monstercat.app');
+	mcatWindow.loadURL(url || 'https://player.monstercat.app');
 
 	mcatWindow.on('ready-to-show', () => {
 		if (!mcatWindow) {
@@ -259,7 +259,7 @@ ipc.on('currentSong', async (e) => {
 	e.reply('currentSong', await fetchCurrentSong());
 });
 
-ipc.on('open-player', async (e) => {
-	createMcat();
+ipc.on('open-player', async (e, url: string | undefined) => {
+	createMcat(url);
 	e.reply('open-player');
 });
