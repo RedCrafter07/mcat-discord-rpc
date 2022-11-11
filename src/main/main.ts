@@ -67,9 +67,9 @@ const createWindow = async () => {
 	mainWindow = new BrowserWindow({
 		show: false,
 		width: 1024,
-		height: 728,
+		height: 750,
 		minWidth: 540,
-		minHeight: 733,
+		minHeight: 750,
 		icon: getAssetPath('icon.png'),
 		title: 'Monstercat Discord RPC',
 		webPreferences: {
