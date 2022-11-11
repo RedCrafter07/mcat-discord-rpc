@@ -10,7 +10,7 @@
 		"type": "git",
 		"url": "git+https://github.com/RedCrafter07/mcat-discord-rpc.git"
 	},
-	"license": "MIT",
+	"license": "GPL-3.0-or-later",
 	"author": {
 		"name": "RedCrafter07",
 		"email": "hi@r07.dev"
