@@ -351,7 +351,7 @@ const App = () => {
 												/>
 											</Tooltip.Floating>
 											<div className="flex-grow">
-												<p className="text-3xl">
+												<p className="text-2xl">
 													{
 														listeningData
 															?.CurrentlyPlaying
@@ -363,7 +363,7 @@ const App = () => {
 														? `(${listeningData?.CurrentlyPlaying?.TrackVersion})`
 														: ''}
 												</p>
-												<p className="text-2xl">
+												<p className="text-xl">
 													{
 														listeningData
 															?.CurrentlyPlaying
