@@ -1,25 +1,80 @@
-import { JsonDB } from 'node-json-db';
-import { Config } from 'node-json-db/dist/lib/JsonDBConfig'
+import { app } from 'electron';
+import path from 'path';
+import { readFile, writeFile } from 'fs/promises';
 
-// The first argument is the database filename. If no extension, '.json' is assumed and automatically added.
-// The second argument is used to tell the DB to save after each push
-// If you put false, you'll have to call the save() method.
-// The third argument is to ask JsonDB to save the database in an human readable format. (default false)
-// The last argument is the separator. By default it's slash (/)
-const db = new JsonDB(new Config("data", true, false, '/'));
+const dataPath = path.join(app.getPath('userData'), 'data.json');
 
-(async () => {
-    const data = await db.getData("/");
-    if(!data.timeType) data.timeType = "remaining";
-    if(!data.show) data.show = {
-        "time": true,
-        "trackName": true,
-        "artistName": true,
-        "albumName": true,
-        "playButton": true
-    }
+async function getData() {
+	try {
+		const data = await readFile(dataPath, 'utf-8');
+		const parsedData = JSON.parse(data);
 
-    await db.push("/", data);
-})()
+		return parsedData;
+	} catch (e) {
+		initDatabase();
+		return {};
+	}
+}
 
-export default db;
+async function writeData(data: any) {
+	await writeFile(dataPath, JSON.stringify(data));
+}
+
+async function push(path: string, data: any) {
+	const currentData = await getData();
+
+	const pathParts = path.split('/').filter((part) => part !== '');
+	let currentPath = currentData;
+
+	pathParts.forEach((d, i, a) => {
+		if (i === a.length - 1) {
+			currentPath[d] = data;
+		} else {
+			if (!currentPath[d]) currentPath[d] = {};
+			currentPath = currentPath[d];
+		}
+	});
+
+	await writeData(currentData);
+}
+
+async function initDatabase() {
+	const data = await getData();
+	if (!data.timeType) data.timeType = 'remaining';
+	if (!data.show)
+		data.show = {
+			time: true,
+			trackName: true,
+			artistName: true,
+			albumName: true,
+			playButton: true,
+		};
+
+	await push('/', data);
+}
+
+initDatabase();
+
+async function deleteData(path: string) {
+	const currentData = await getData();
+
+	const pathParts = path.split('/').filter((part) => part !== '');
+	let currentPath = currentData;
+
+	pathParts.forEach((d, i, a) => {
+		if (i === a.length - 1) {
+			delete currentPath[d];
+		} else {
+			if (!currentPath[d]) currentPath[d] = {};
+			currentPath = currentPath[d];
+		}
+	});
+
+	await writeData(currentData);
+}
+
+export default {
+	getData,
+	push,
+	delete: deleteData,
+};
