@@ -335,7 +335,7 @@ const App = () => {
 										Current
 									</Accordion.Control>
 									<Accordion.Panel>
-										<div className="grid gap-4 grid-cols-4">
+										<div className="gap-4 flex flex-row">
 											<Tooltip.Floating
 												label={
 													listeningData
@@ -350,7 +350,7 @@ const App = () => {
 													className="col-span-1"
 												/>
 											</Tooltip.Floating>
-											<div className="col-span-3">
+											<div className="flex-grow">
 												<p className="text-3xl">
 													{
 														listeningData
