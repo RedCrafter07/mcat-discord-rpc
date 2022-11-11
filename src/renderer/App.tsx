@@ -347,6 +347,7 @@ const App = () => {
 													key={`${listeningData?.CurrentlyPlaying?.CatalogId} current`}
 													src={`https://cdx.monstercat.com/?width=256&encoding=webp&url=https%3A%2F%2Fwww.monstercat.com%2Frelease%2F${listeningData?.CurrentlyPlaying?.CatalogId}%2Fcover`}
 													alt="Cover"
+													className="h-60 w-60"
 												/>
 											</Tooltip.Floating>
 											<div className="flex-grow">
