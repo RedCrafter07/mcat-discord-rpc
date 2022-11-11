@@ -221,7 +221,7 @@ const App = () => {
 					</div>
 					<div className="text-white w-screen min-h-screen">
 						<AnimatePresence mode="wait">{overlay}</AnimatePresence>
-						<div className="container mx-auto px-2">
+						<div className="container mx-auto p-2">
 							<h1 className="text-3xl">Hi there!</h1>
 							<p>Welcome to the Monstercat Discord RPC!</p>
 							<div className="my-4" />
